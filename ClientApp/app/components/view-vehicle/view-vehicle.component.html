@@ -1,0 +1,59 @@
+<div class="margin-top-20">
+  <h2>Vehicle</h2>
+  <ul class="nav nav-tabs">
+    <li class="active">
+      <a data-toggle="tab" href="#details">View Vehicle</a>
+    </li>
+    <li>
+      <a data-toggle="tab" href="#uploadPhoto">Upload Photo</a>
+    </li>
+  </ul>
+
+  <div class="tab-content" *ngIf="vehicle">
+    <div id="details" class="tab-pane fade in active">
+      <h3>Basics</h3>
+      <p>
+        <strong>Make: </strong>{{ vehicle.make.name }}</p>
+      <p>
+        <strong>Model: </strong>{{ vehicle.model.name }}</p>
+      <p>
+        <strong>Is Registered?: </strong>{{ vehicle.isRegistered ? "Yes" : "No" }}</p>
+      <p>
+        <strong>Last Update: </strong>{{ vehicle.lastUpdate | date }}</p>
+
+      <h3>Features</h3>
+      <p *ngIf="vehicle.features.length <= 0" class="text-danger">No features for this vehicle.</p>
+      <ul>
+        <li *ngFor="let f of vehicle.features">
+          {{ f.name }}
+        </li>
+      </ul>
+      <h3>Contact</h3>
+      <p>
+        <strong>Name: </strong>{{ vehicle.contact.name }}</p>
+      <p>
+        <strong>Phone: </strong>{{ vehicle.contact.phone }}</p>
+      <p>
+        <strong>Email: </strong>{{ vehicle.contact.email }}</p>
+      <div class="margin-top-20">
+        <a [routerLink]="['/vehicles/edit/', vehicle.id]" class="btn btn-primary">Edit</a>
+        <button type="button" (click)="delete()" class="btn btn-danger">Delete</button>
+        <a [routerLink]="['/vehicles']" class="btn btn-default">Back to Vehicles</a>
+      </div>
+    </div>
+    <div id="uploadPhoto" class="tab-pane fade">
+      <h3>Photos</h3>
+      <input type="file" (change)="uploadPhoto()" #fileInput>
+      <div class="margin-top-20">
+        <div class="progress" *ngIf="progress && progress.percentage < 100">
+          <div class="progress-bar" role="progressbar progress-bar-success" aria-valuemin="0" aria-valuemax="100"
+            [style.width]="progress.percentage + '%'">
+            {{ progress.percentage }}% Complete
+          </div>
+        </div>
+
+        <img *ngFor="let photo of photos" src="/uploads/{{ photo.fileName }}" class="img-thumbnail">
+      </div>
+    </div>
+  </div>
+</div>
